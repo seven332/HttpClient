@@ -16,6 +16,8 @@
 
 package com.hippo.httpclient;
 
+import com.hippo.yorozuya.IOUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -95,7 +97,7 @@ public class HttpResponse {
             baos = new ByteArrayOutputStream();
         }
 
-        Utils.copy(is, baos);
+        IOUtils.copy(is, baos);
 
         return baos.toString("UTF-8"); // TODO get charset from header or body
     }

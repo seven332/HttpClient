@@ -16,6 +16,8 @@
 
 package com.hippo.httpclient;
 
+import com.hippo.yorozuya.Utilities;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +43,7 @@ public class Cookie {
                 if (index != -1) {
                     String key = p.substring(0, index).trim();
                     String value = p.substring(index + 1).trim();
-                    if (!Utils.contain(UNSUPPORT_KEY, key)) {
+                    if (!Utilities.contain(UNSUPPORT_KEY, key)) {
                         mItems.put(key, value);
                     }
                 }
@@ -50,7 +52,7 @@ public class Cookie {
     }
 
     public void put(String key, String value) {
-        if (!Utils.contain(UNSUPPORT_KEY, key)) {
+        if (!Utilities.contain(UNSUPPORT_KEY, key)) {
             mItems.put(key, value);
         }
     }
