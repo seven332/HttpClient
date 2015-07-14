@@ -95,6 +95,16 @@ public class HttpRequest {
         return mState;
     }
 
+    public void clear() {
+        disconnect();
+        mState = STATE_NONE;
+        mCancel = false;
+        conn = null;
+        mHttpImpl = null;
+        mUrl = null;
+        mMethod = METHOD_GET;
+    }
+
     protected void onBeforeConnect(HttpURLConnection conn) throws Exception {
         switch (mMethod) {
             default:
