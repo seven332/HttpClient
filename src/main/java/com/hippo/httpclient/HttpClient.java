@@ -54,6 +54,9 @@ public class HttpClient {
     }
 
     public HttpResponse execute(HttpRequest request) throws Exception {
+        if (request.getHttpImple() == null) {
+            request.setHttpImpl(new StringGetter());
+        }
         request.start();
         return HttpEngine.request(this, request);
     }

@@ -66,6 +66,10 @@ public class HttpRequest {
         mHttpImpl = httpImpl;
     }
 
+    HttpImpl getHttpImple() {
+        return mHttpImpl;
+    }
+
     void start() {
         mState = STATE_RUNNING;
     }
