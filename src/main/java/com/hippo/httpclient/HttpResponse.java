@@ -16,12 +16,15 @@
 
 package com.hippo.httpclient;
 
+import android.support.annotation.NonNull;
+
 import com.hippo.yorozuya.IOUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.zip.GZIPInputStream;
 
 public class HttpResponse {
@@ -36,6 +39,12 @@ public class HttpResponse {
         if (mRequest.getState() != HttpRequest.STATE_RUNNING) {
             throw new IllegalStateException("The request is disconnected");
         }
+    }
+
+    public URL getUrl() {
+        checkRequest();
+
+        return mRequest.conn.getURL();
     }
 
     public int getResponseCode() throws IOException {
@@ -62,7 +71,7 @@ public class HttpResponse {
         return mRequest.conn.getHeaderField(key);
     }
 
-    public InputStream getInputStream() throws IOException {
+    public @NonNull InputStream getInputStream() throws IOException {
         checkRequest();
 
         HttpRequest request = mRequest;
