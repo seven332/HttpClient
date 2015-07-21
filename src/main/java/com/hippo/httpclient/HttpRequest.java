@@ -24,13 +24,12 @@ public class HttpRequest {
 
     public static final int STATE_NONE = 0;
     public static final int STATE_RUNNING = 1;
-    public static final int STATE_DISCONNECT = 1;
+    public static final int STATE_DISCONNECT = 2;
 
     public static final int METHOD_GET = 0;
     public static final int METHOD_POST = 1;
 
     private int mState = STATE_NONE;
-    private boolean mCancel = false;
 
     HttpURLConnection conn;
     private HttpImpl mHttpImpl;
@@ -84,17 +83,6 @@ public class HttpRequest {
         }
     }
 
-    public void cancel() {
-        if (!mCancel) {
-            mCancel = true;
-            disconnect();
-        }
-    }
-
-    public boolean isCanceled() {
-        return mCancel;
-    }
-
     public int getState() {
         return mState;
     }
@@ -102,7 +90,6 @@ public class HttpRequest {
     public void clear() {
         disconnect();
         mState = STATE_NONE;
-        mCancel = false;
         conn = null;
         mHttpImpl = null;
         mUrl = null;

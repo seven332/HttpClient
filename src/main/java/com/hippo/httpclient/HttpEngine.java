@@ -36,7 +36,7 @@ public final class HttpEngine {
 
         try {
             while (redirectionCount++ < MAX_REDIRECTS) {
-                if (request.isCanceled()) {
+                if (request.getState() != HttpRequest.STATE_RUNNING) {
                     throw new IOException("The Http call is canceled");
                 }
 

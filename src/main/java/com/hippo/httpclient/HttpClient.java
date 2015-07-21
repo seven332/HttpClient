@@ -54,6 +54,10 @@ public class HttpClient {
     }
 
     public HttpResponse execute(HttpRequest request) throws Exception {
+        if (request.getState() != HttpRequest.STATE_NONE) {
+            throw new IOException("The request is running or disconnected");
+        }
+
         if (request.getHttpImple() == null) {
             request.setHttpImpl(new StringGetter());
         }
