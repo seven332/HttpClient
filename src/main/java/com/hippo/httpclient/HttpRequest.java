@@ -16,9 +16,16 @@
 
 package com.hippo.httpclient;
 
+import android.os.Looper;
+import android.os.Process;
+
+import com.hippo.yorozuya.PriorityThreadFactory;
+import com.hippo.yorozuya.SerialThreadExecutor;
+
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class HttpRequest {
 
@@ -36,6 +43,10 @@ public class HttpRequest {
 
     private URL mUrl;
     private int mMethod = METHOD_GET;
+
+    private static final SerialThreadExecutor sThreadExecutor = new SerialThreadExecutor(
+            3000, new LinkedBlockingQueue<Runnable>(),
+            new PriorityThreadFactory("HttpRequestCancel", Process.THREAD_PRIORITY_BACKGROUND));
 
     public int getMethod() {
         return mMethod;
@@ -73,11 +84,17 @@ public class HttpRequest {
         mState = STATE_RUNNING;
     }
 
+    // TODO
     public void disconnect() {
         if (mState != STATE_DISCONNECT) {
             mState = STATE_DISCONNECT;
             if (conn != null) {
-                conn.disconnect();
+                // Avoid NetworkOnMainThreadException
+                if (Looper.getMainLooper() == Looper.myLooper()) {
+                    sThreadExecutor.execute(new HttpRequestCanceller(conn));
+                } else {
+                    conn.disconnect();
+                }
                 conn = null;
             }
         }
@@ -133,6 +150,23 @@ public class HttpRequest {
     protected void storeCookie(URL url, String cookie) {
         if (mHttpImpl != null) {
             mHttpImpl.storeCookie(url, cookie);
+        }
+    }
+
+    class HttpRequestCanceller implements Runnable {
+
+        private HttpURLConnection mConn;
+
+        public HttpRequestCanceller(HttpURLConnection conn) {
+            mConn = conn;
+        }
+
+        @Override
+        public void run() {
+            if (mConn != null) {
+                mConn.disconnect();
+                mConn = null;
+            }
         }
     }
 }
