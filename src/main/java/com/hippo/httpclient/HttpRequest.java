@@ -38,6 +38,8 @@ public class HttpRequest {
 
     private int mState = STATE_NONE;
 
+    private boolean mCancel = false;
+
     HttpURLConnection conn;
     private HttpImpl mHttpImpl;
 
@@ -84,7 +86,6 @@ public class HttpRequest {
         mState = STATE_RUNNING;
     }
 
-    // TODO
     public void disconnect() {
         if (mState != STATE_DISCONNECT) {
             mState = STATE_DISCONNECT;
@@ -98,6 +99,17 @@ public class HttpRequest {
                 conn = null;
             }
         }
+    }
+
+    public void cancel() {
+        if (!mCancel) {
+            mCancel = true;
+            disconnect();
+        }
+    }
+
+    public boolean isCancelled() {
+        return mCancel;
     }
 
     public int getState() {
