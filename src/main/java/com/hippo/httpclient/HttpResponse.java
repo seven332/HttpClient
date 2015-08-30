@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
 public class HttpResponse {
@@ -69,6 +71,12 @@ public class HttpResponse {
         checkRequest();
 
         return mRequest.conn.getHeaderField(key);
+    }
+
+    public Map<String, List<String>> getHeaderFields() {
+        checkRequest();
+
+        return mRequest.conn.getHeaderFields();
     }
 
     public @NonNull InputStream getInputStream() throws IOException {

@@ -86,7 +86,10 @@ public class HttpClient {
     protected void fillCookie(URL url, Cookie cookie) {
     }
 
-    protected void storeCookie(URL url, String cookie) {
+    /**
+     * @param key Set-Cookie or Set-Cookie2
+     */
+    protected void storeCookie(URL url, String key, String value) {
     }
 
     class PasswordAuthenticator extends Authenticator {

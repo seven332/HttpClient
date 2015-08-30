@@ -159,9 +159,12 @@ public class HttpRequest {
         }
     }
 
-    protected void storeCookie(URL url, String cookie) {
+    /**
+     * @param key Set-Cookie or Set-Cookie2
+     */
+    protected void storeCookie(URL url, String key, String value) {
         if (mHttpImpl != null) {
-            mHttpImpl.storeCookie(url, cookie);
+            mHttpImpl.storeCookie(url, key, value);
         }
     }
 

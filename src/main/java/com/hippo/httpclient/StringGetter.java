@@ -39,8 +39,11 @@ public class StringGetter implements HttpImpl {
 
     }
 
+    /**
+     * @param key Set-Cookie or Set-Cookie2
+     */
     @Override
-    public void storeCookie(URL url, String cookie) {
+    public void storeCookie(URL url, String key, String value) {
 
     }
 }
