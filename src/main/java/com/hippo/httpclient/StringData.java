@@ -16,6 +16,8 @@
 
 package com.hippo.httpclient;
 
+import android.support.annotation.Nullable;
+
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -23,13 +25,15 @@ public class StringData extends FormData {
 
     private final String mStr;
 
-    public StringData(String str) {
+    public StringData(@Nullable String str) {
         mStr = str;
     }
 
     @Override
     public void output(OutputStream os) throws IOException {
-        os.write(mStr.getBytes("UTF-8"));
+        if (mStr != null) {
+            os.write(mStr.getBytes("UTF-8"));
+        }
         os.write("\r\n".getBytes());
     }
 }

@@ -25,6 +25,9 @@ public class FormDataPoster extends StringGetter {
 
     private FormData[] mFormDatas;
 
+    /**
+     * @param formDatas null FormData will be skipped
+     */
     public FormDataPoster(FormData... formDatas) {
         mFormDatas = formDatas;
     }
@@ -47,6 +50,10 @@ public class FormDataPoster extends StringGetter {
         DataOutputStream out = new DataOutputStream(conn.getOutputStream());
 
         for (FormData data : mFormDatas) {
+            if (data == null) {
+                continue;
+            }
+
             out.write("--".getBytes());
             out.write(BOUNDARY.getBytes());
             out.write("\r\n".getBytes());

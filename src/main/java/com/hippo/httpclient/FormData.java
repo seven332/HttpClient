@@ -22,10 +22,24 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class FormData {
-    private final Map<String, String> mProperties;
 
-    public FormData() {
-        mProperties = new LinkedHashMap<>();
+    private final Map<String, String> mProperties = new LinkedHashMap<>();
+    private StringBuilder mContentDisposition;
+
+    public void setName(String name) {
+        if (mContentDisposition == null) {
+            mContentDisposition = new StringBuilder();
+            mContentDisposition.append("form-data");
+        }
+        mContentDisposition.append(";name=\"").append(name).append("\"");
+    }
+
+    public void setFilename(String filename) {
+        if (mContentDisposition == null) {
+            mContentDisposition = new StringBuilder();
+            mContentDisposition.append("form-data");
+        }
+        mContentDisposition.append(";filename=\"").append(filename).append("\"");
     }
 
     public void setProperty(String key, String value) {
@@ -48,7 +62,15 @@ public abstract class FormData {
      */
     public abstract void output(OutputStream os) throws IOException;
 
+    private void handleContentDisposition() {
+        if (mContentDisposition != null) {
+            mProperties.put("Content-Disposition", mContentDisposition.toString());
+        }
+    }
+
     public void doOutPut(OutputStream os) throws IOException {
+        handleContentDisposition();
+
         StringBuilder sb = new StringBuilder();
         for (String key : mProperties.keySet())
             sb.append(key).append(": ").append(mProperties.get(key)).append("\r\n");

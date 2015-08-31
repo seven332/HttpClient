@@ -16,6 +16,8 @@
 
 package com.hippo.httpclient;
 
+import android.support.annotation.Nullable;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,22 +27,26 @@ import java.net.URLConnection;
 
 public class FileData extends FormData {
 
-    private final File mFile;
+    private File mFile;
 
-    public FileData(File file) {
-        mFile = file;
-        setProperty("Content-Type",
-                URLConnection.guessContentTypeFromName(file.getName()));
+    public FileData(@Nullable File file) {
+        if (file != null) {
+            mFile = file;
+            setProperty("Content-Type",
+                    URLConnection.guessContentTypeFromName(file.getName()));
+        }
     }
 
     @Override
     public void output(OutputStream os) throws IOException {
-        InputStream is = new FileInputStream(mFile);
-        byte[] buffer = new byte[1024];
-        int bytesRead;
-        while((bytesRead = is.read(buffer)) !=-1)
-            os.write(buffer, 0, bytesRead);
-        is.close();
+        if (mFile != null) {
+            InputStream is = new FileInputStream(mFile);
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = is.read(buffer)) != -1)
+                os.write(buffer, 0, bytesRead);
+            is.close();
+        }
 
         os.write("\r\n".getBytes());
     }
