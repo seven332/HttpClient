@@ -67,6 +67,12 @@ public class HttpResponse {
         return mRequest.conn.getContentType();
     }
 
+    public String getContentEncoding() {
+        checkRequest();
+
+        return mRequest.conn.getContentEncoding();
+    }
+
     public String getHeaderField(String key) {
         checkRequest();
 
