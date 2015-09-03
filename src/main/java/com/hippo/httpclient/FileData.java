@@ -47,7 +47,5 @@ public class FileData extends FormData {
                 os.write(buffer, 0, bytesRead);
             is.close();
         }
-
-        os.write("\r\n".getBytes());
     }
 }

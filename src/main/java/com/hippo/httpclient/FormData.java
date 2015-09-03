@@ -62,16 +62,11 @@ public abstract class FormData {
      */
     public abstract void output(OutputStream os) throws IOException;
 
-    private void handleContentDisposition() {
-        if (mContentDisposition != null) {
-            mProperties.put("Content-Disposition", mContentDisposition.toString());
-        }
-    }
-
     public void doOutPut(OutputStream os) throws IOException {
-        handleContentDisposition();
-
         StringBuilder sb = new StringBuilder();
+        if (mContentDisposition != null) {
+            sb.append("Content-Disposition").append(": ").append(mContentDisposition).append("\r\n");
+        }
         for (String key : mProperties.keySet())
             sb.append(key).append(": ").append(mProperties.get(key)).append("\r\n");
         sb.append("\r\n");

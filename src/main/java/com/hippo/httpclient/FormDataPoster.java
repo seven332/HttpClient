@@ -48,6 +48,7 @@ public class FormDataPoster extends StringGetter {
         super.onOutput(conn);
 
         DataOutputStream out = new DataOutputStream(conn.getOutputStream());
+        //OutputStream out = new FileOutputStream(new File(Environment.getExternalStorageDirectory(), "a.txt"));
 
         for (FormData data : mFormDatas) {
             if (data == null) {
@@ -58,6 +59,7 @@ public class FormDataPoster extends StringGetter {
             out.write(BOUNDARY.getBytes());
             out.write("\r\n".getBytes());
             data.doOutPut(out);
+            out.write("\r\n".getBytes());
         }
         out.write("--".getBytes());
         out.write(BOUNDARY.getBytes());

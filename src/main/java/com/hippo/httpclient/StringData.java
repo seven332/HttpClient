@@ -34,6 +34,5 @@ public class StringData extends FormData {
         if (mStr != null) {
             os.write(mStr.getBytes("UTF-8"));
         }
-        os.write("\r\n".getBytes());
     }
 }
