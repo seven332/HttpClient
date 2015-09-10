@@ -16,6 +16,8 @@
 
 package com.hippo.httpclient;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -52,6 +54,9 @@ public final class HttpEngine {
 
                 conn.connect();
                 request.onOutput(conn);
+
+                Log.d("TAG", "" + url);
+
                 final int responseCode = conn.getResponseCode();
                 switch (responseCode) {
                     case HttpURLConnection.HTTP_MOVED_PERM:
@@ -73,7 +78,7 @@ public final class HttpEngine {
                         }
 
                         List<String> cookies2 = conn.getHeaderFields().get("Set-Cookie2");
-                        if (cookies != null) {
+                        if (cookies2 != null) {
                             for (String cookieStr : cookies2) {
                                 client.storeCookie(url, "Set-Cookie2", cookieStr);
                                 request.storeCookie(url, "Set-Cookie2", cookieStr);
