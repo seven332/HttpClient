@@ -34,6 +34,10 @@ public class HttpClient {
     private String mUserAgent = System.getProperty("http.agent", DEFAULT_USER_AGENT);
     private Proxy mProxy;
 
+    static {
+        System.setProperty("http.keepAlive", "false");
+    }
+
     public void setConnectTimeout(int connectTimeout) {
         if (connectTimeout < 0) {
             throw new IllegalStateException("Connect timeout must be non-negtive");
