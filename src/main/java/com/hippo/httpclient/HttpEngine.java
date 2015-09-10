@@ -74,7 +74,7 @@ public final class HttpEngine {
 
                         List<String> cookies2 = conn.getHeaderFields().get("Set-Cookie2");
                         if (cookies != null) {
-                            for (String cookieStr : cookies) {
+                            for (String cookieStr : cookies2) {
                                 client.storeCookie(url, "Set-Cookie2", cookieStr);
                                 request.storeCookie(url, "Set-Cookie2", cookieStr);
                             }
