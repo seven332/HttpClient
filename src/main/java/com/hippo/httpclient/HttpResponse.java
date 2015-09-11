@@ -88,14 +88,21 @@ public class HttpResponse {
     public @NonNull InputStream getInputStream() throws IOException {
         checkRequest();
 
+        InputStream is;
         HttpRequest request = mRequest;
         try {
-            return request.conn.getInputStream();
+            is = request.conn.getInputStream();
         } catch (IOException e) {
-            InputStream is = request.conn.getErrorStream();
-            if (is == null) {
-                throw new IOException("Can't get InputStream");
-            }
+            is = request.conn.getErrorStream();
+        }
+        if (is == null) {
+            throw new IOException("Can't get InputStream");
+        }
+
+        String encoding = request.conn.getContentEncoding();
+        if (encoding != null && encoding.equalsIgnoreCase("gzip")) {
+            return new GZIPInputStream(is);
+        } else {
             return is;
         }
     }
@@ -106,11 +113,6 @@ public class HttpResponse {
         HttpRequest request = mRequest;
         HttpURLConnection conn = request.conn;
         InputStream is = getInputStream();
-
-        String encoding = conn.getContentEncoding();
-        if (encoding != null && encoding.equalsIgnoreCase("gzip")) {
-            is = new GZIPInputStream(is);
-        }
 
         ByteArrayOutputStream baos;
         int length = conn.getContentLength();
